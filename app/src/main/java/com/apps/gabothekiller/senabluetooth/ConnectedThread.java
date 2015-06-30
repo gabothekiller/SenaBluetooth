@@ -17,7 +17,7 @@ public class ConnectedThread extends Thread {
     private final BluetoothSocket mmSocket;
     private final InputStream mmInStream;
     private final OutputStream mmOutStream;
-    private final Handler mHandler;
+    private Handler mHandler;
 
     public ConnectedThread(BluetoothSocket socket,  Handler mHandler) {
         mmSocket = socket;
@@ -97,6 +97,10 @@ public class ConnectedThread extends Thread {
 
             }
         }
+    }
+
+    public void changeThisFuckingHandlerOnceAndForAll (Handler mHandler){
+        this.mHandler = mHandler;
     }
 
     /* Call this from the main activity to send data to the remote device */

@@ -42,7 +42,8 @@ public class MainActivity extends Activity {
     static Handler mHandler;
 
     // this is the bluetooth connection to pass to other activities.
-    static BluetoothSocket btSocket;
+    //static BluetoothSocket btSocket;
+    static ConnectedThread connectedThread;
 
     // connection between devices
     public static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -179,8 +180,9 @@ public class MainActivity extends Activity {
         unregisterReceiver(receiver);
     }
 
-    public static void setConnectedThread( BluetoothSocket socket ){
-        MainActivity.btSocket = socket;
+    public static void setConnectedThread( BluetoothSocket socket, Handler handler ){
+        connectedThread = new ConnectedThread(socket , handler);
+        //MainActivity.btSocket = socket;
     }
 
     static class MyHandler extends Handler{
@@ -204,7 +206,8 @@ public class MainActivity extends Activity {
                     Log.i(TAG, "in SUCCESS CONNECT");
 
                     // set the socket as static so that it can be accessed in other classes !!
-                    setConnectedThread( (BluetoothSocket) msg.obj );
+                    BluetoothSocket mSocket = (BluetoothSocket) msg.obj;
+                    setConnectedThread( mSocket, this );
 
                     Toast.makeText(mActivity, "CONNECT", Toast.LENGTH_SHORT).show();
 
